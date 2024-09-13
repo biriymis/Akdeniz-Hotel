@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
@@ -21,7 +21,7 @@ const PersonnelInfo = () => {
 
   const fetchPersonData = async () => {
     try {
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+      const response = await axios.get(`https://run.mocky.io/v3/6c482efa-0fad-493b-8fab-efd4149810c4`);
       setPerson(response.data);
     } catch (error) {
       console.error('Error fetching person data:', error);
@@ -53,7 +53,6 @@ const PersonnelInfo = () => {
 
   const handleEditPersonnel = () => {
     navigation.navigate('EditPersonnel', { id: id });
-
   };
 
   if (!person) {
@@ -67,15 +66,31 @@ const PersonnelInfo = () => {
       <Text style={styles.details}>ID: {person.id}</Text>
       <Text style={styles.details}>Phone: {person.phone}</Text>
       <Text style={styles.details}>Email: {person.email}</Text>
-      <Text style={styles.details}>Gender:</Text>
       <Text style={styles.details}>Address: {person.address?.street}, {person.address?.city}</Text>
-      <Text style={styles.details}>National ID: {person.id}</Text>
+      <Text style={styles.details}>National ID: {person.nationalId}</Text>
+
+      <Text style={styles.header}>Leave Tracking</Text>
+      {person.leaves && person.leaves.length > 0 ? (
+        person.leaves.map((leave: any, index: number) => (
+          <Text key={index} style={styles.details}>Date: {leave.date}, Reason: {leave.reason}</Text>
+        ))
+      ) : (
+        <Text style={styles.details}>No leave records available.</Text>
+      )}
+
+      <Text style={styles.header}>Cleaning Tracking</Text>
+      {person.cleaning && person.cleaning.length > 0 ? (
+        person.cleaning.map((cleaning: any, index: number) => (
+          <Text key={index} style={styles.details}>Date: {cleaning.date}, Status: {cleaning.status}</Text>
+        ))
+      ) : (
+        <Text style={styles.details}>No cleaning records available.</Text>
+      )}
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleEditPersonnel} style={styles.button}>
           <Text style={styles.addText}>Edit</Text>
         </TouchableOpacity>
-       
         <TouchableOpacity onPress={handleDeletePersonnel} style={styles.button}>
           <Text style={styles.addText}>Delete</Text>
         </TouchableOpacity>
@@ -86,31 +101,8 @@ const PersonnelInfo = () => {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
-   marginTop:90
-  },
-  addText: {
-    color: '#000',
-    marginLeft: 45,
-    fontSize: 16,
-    fontWeight:'bold',
-    justifyContent:'center',
-    alignItems: 'center',
-   
-  },
-  button:{ 
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: '#FF6B00',
-    borderWidth: 1.5,
-    borderRadius: 10,
-    marginLeft:30,
-    marginRight:30,
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    width:130,
-    height: 40,
-
+    flex: 1,
+    marginTop: 20,
   },
   profileImage: {
     width: 150,
@@ -128,13 +120,36 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 7,
     textAlign: 'center',
-    flexDirection: 'row',
-    
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#FF6B00',
+    borderWidth: 1.5,
+    borderRadius: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    width: 130,
+    height: 40,
+    justifyContent: 'center',
+  },
+  addText: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    textAlign: 'center',
   },
 });
 

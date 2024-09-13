@@ -9,7 +9,7 @@ export const ForgotPassword = () => {
 
   const handleForgotPassword = async () => {
     try {
-      const response = await axios.post('https://run.mocky.io/v3/b37a2aaa-1ca9-41f4-8e51-46980c01b934', { email });
+      const response = await axios.post('https://run.mocky.io/v3/985abdd1-a33e-400f-b0f4-66c6add19b50', { email });
 
       if (response.data.success) {
         Alert.alert('Success', 'We have sent a password reset link to your email.');

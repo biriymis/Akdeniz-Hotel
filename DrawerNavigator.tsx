@@ -8,15 +8,22 @@ import  Rooms  from './pages/Rooms';
 import CustomDrawer from './components/CustomDrawer';
 import Navbar from './components/Navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {DrawerScreenProps } from '@react-navigation/drawer';
+
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator: React.FC = () => (
+type DrawerNavigatorProps = {
+  user: {
+    name: string;
+    imageUrl: string;
+  } | null;
+};
+
+const DrawerNavigator: React.FC<DrawerNavigatorProps> = ({ user }) => (
   <Drawer.Navigator
-    drawerContent={(props) => <CustomDrawer {...props} />}
-    screenOptions={({ route, navigation }: DrawerScreenProps<any>) => ({
-      header: () => <Navbar navigation={navigation} />, 
+    drawerContent={(props) => <CustomDrawer {...props} user={user} />}
+    screenOptions={({ route, navigation }) => ({
+      header: () => <Navbar navigation={navigation} />,
       drawerLabelStyle: { marginLeft: -20, fontSize: 15 },
       drawerActiveBackgroundColor: '#FF6B00',
       drawerActiveTintColor: 'black',

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
+const userr = require('../images/userr.png');
 
 interface Personnel {
   id: number;
@@ -14,15 +15,25 @@ interface Personnel {
 export const Personnel = () => {
   const navigation = useNavigation<any>();
   const [personnelData, setPersonnelData] = useState<Personnel[]>([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchPersonnelData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
 
   const fetchPersonnelData = async () => {
     try {
-      const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+      const response = await axios.get('https://run.mocky.io/v3/a10a57e4-181d-4df0-a3d7-62aac084f739');
       const dataWithImages = response.data.map((person: any) => ({
         id: person.id,
         name: person.name.split(' ')[0], 
         lastName: person.name.split(' ')[1] || '',
-        profileImage: 'https://via.placeholder.com/150'
+   
       }));
       setPersonnelData(dataWithImages);
     } catch (error) {
@@ -49,7 +60,10 @@ export const Personnel = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} 
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.addButton} onPress={handleAddNewPersonnel}>
           <Ionicons name="person-add-outline" size={25} color="black" />
@@ -64,7 +78,8 @@ export const Personnel = () => {
             style={styles.frame}
             onPress={() => handleFramePress(person.id)}
           >
-            <Image source={{ uri: person.profileImage }} style={styles.profileImage} />
+       
+            <Image source={ userr } style={styles.profileImage} />
             <View style={styles.textContainer}>
               <Text style={styles.nameText}>{person.name} {person.lastName}</Text>
             </View>

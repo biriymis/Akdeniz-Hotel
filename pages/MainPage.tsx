@@ -19,7 +19,7 @@ export const MainPage: React.FC = () => {
 
   const fetchChartData = async () => {
     try {
-      const response = await axios.get('https://run.mocky.io/v3/95470434-ada2-43ef-8e03-d6ecd351417b');
+      const response = await axios.get('https://run.mocky.io/v3/c8918a60-e5e2-4083-a8ce-d35170ec02e8');
       const fetchedData = response.data;
 
       setData([

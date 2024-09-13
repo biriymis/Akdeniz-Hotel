@@ -28,7 +28,7 @@ export const AddNewPersonnel = () => {
     };
 
     try {
-      const response = await fetch('https://run.mocky.io/v3/a37696f5-49ee-4d39-8008-04f33e5f1e19', {
+      const response = await fetch('https://run.mocky.io/v3/bc7be70b-c256-4539-8c13-21600e06fb8c', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export const AddNewPersonnel = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 40,
  
     padding: 10,
   },
@@ -182,15 +182,14 @@ const styles = StyleSheet.create({
     width: 160,
     borderColor: 'orange',
     borderWidth: 1.5,
-    borderRadius: 15,
+    borderRadius: 10,
     fontSize: 15,
     paddingHorizontal: 20,
   },
   names: {
     fontSize: 15,
-    fontWeight: 'bold',
     color: 'black',
-    fontStyle: 'italic',
+ 
   },
   button: {
     alignSelf: 'flex-end',
@@ -201,11 +200,9 @@ const styles = StyleSheet.create({
     width: 90,
     borderColor: 'orange',
     borderWidth: 1.5,
-    borderRadius: 15,
-    fontWeight: 'bold',
+    borderRadius: 10,
     textAlign: 'center',
     lineHeight: 35,
-    fontStyle: 'italic',
     fontSize: 20,
   },
 });

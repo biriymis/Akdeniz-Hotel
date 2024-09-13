@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, SafeAreaView, Keyboard } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-export const LogIn = () => {
+export const LogIn = ({ setUser }: { setUser: (user: any) => void }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation<any>();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://run.mocky.io/v3/71025cec-a24a-42ca-9488-3f947f0a0b62', {
+      const response = await axios.post('https://run.mocky.io/v3/fedb56b2-827f-4323-8d65-fc139bc77809', {
         username,
         password
       });
@@ -19,7 +19,8 @@ export const LogIn = () => {
 
       if (user) {
         Alert.alert('Login Successful', `Welcome ${user.user.name}!`);
-        navigation.navigate('DrawerNavigator', { user: user.user });
+        setUser(user.user);
+        navigation.navigate('DrawerNavigator');
       } else {
         Alert.alert('Login Failed', 'Invalid username or password!');
         setPassword('');
@@ -31,9 +32,15 @@ export const LogIn = () => {
     }
   };
 
+  const handleSubmit = () => {
+    handleLogin();
+    Keyboard.dismiss(); 
+  };
+
   return (
+    
     <SafeAreaView style={styles.container}>
-      <View style={styles.innercontainer}>
+      <View style={styles.innercontainer}>  
         <Text style={styles.login}>Login</Text>
         <TextInput
           style={styles.input}
@@ -41,6 +48,8 @@ export const LogIn = () => {
           value={username}
           onChangeText={setUsername}
           autoCapitalize='none'
+          onSubmitEditing={handleSubmit}
+         
         />
         <TextInput
           style={styles.input}
@@ -49,14 +58,18 @@ export const LogIn = () => {
           onChangeText={setPassword}
           secureTextEntry
           maxLength={8}
+          onSubmitEditing={handleSubmit}
         />
       </View>
+     
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
         <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
+
       <TouchableOpacity onPress={handleLogin}>
         <Text style={styles.button}>Login</Text>
       </TouchableOpacity>
+
     </SafeAreaView>
   );
 };
@@ -93,7 +106,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 8,
     fontSize: 18,
-    marginLeft: 5,
+   
   },
   button: {
     height: 50,

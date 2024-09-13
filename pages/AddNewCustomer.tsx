@@ -1,33 +1,64 @@
 import { Text, View, TextInput, StyleSheet, SafeAreaView, TouchableOpacity, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 export const AddNewCustomer = () => {
   const navigation = useNavigation<any>();
-  const [Id, setId] = useState('');
+  const [Idnumber, setIdNumber] = useState('');
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [mail, setMail] = useState('');
   const [phone, setPhone] = useState('');
   const [gender, setGender] = useState('');
   const [nationality, setNationality] = useState('');
-  const [Idnumber, setIdNumber] = useState('');
   const [birthday, setBirthday] = useState('');
   const [address, setAddress] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
+  
+
+  useEffect(() => {
+    if (Idnumber) {
+      fetchCustomerData(Idnumber);
+    }
+  }, [Idnumber]);
+
+  const fetchCustomerData = async (id: string) => {
+    try {
+      const response = await axios.get(`https://run.mocky.io/v3/334c118c-354e-4c09-8d6f-0001a3bc0f3b/${id}`);
+      if (response.status === 200) {
+        const customer = response.data;
+        setName(customer.name || '');
+        setLastname(customer.lastname || '');
+        setMail(customer.mail || '');
+        setPhone(customer.phone || '');
+        setGender(customer.gender || '');
+        setNationality(customer.nationality || '');
+        setIdNumber(customer.Idnumber || '');
+        setBirthday(customer.birthday || '');
+        setAddress(customer.address || '');
+        setCountry(customer.country || '');
+        setCity(customer.city || '');
+      } else {
+        Alert.alert('Customer Not Found', 'No customer found with this Passport Id Number.');
+        handleReset();
+      }
+    } catch (error) {
+      Alert.alert('Error', 'There was an error fetching customer data.');
+      console.error(error);
+    }
+  };
 
   const handleSave = async () => {
     const data = {
-      Id,
+      Idnumber,
       name,
       lastname,
       mail,
       phone,
       gender,
       nationality,
-      Idnumber,
       birthday,
       address,
       country,
@@ -35,7 +66,7 @@ export const AddNewCustomer = () => {
     };
 
     try {
-      const response = await axios.post('https://run.mocky.io/v3/your-mock-api-endpoint', data);
+      const response = await axios.post('https://run.mocky.io/v3/334c118c-354e-4c09-8d6f-0001a3bc0f3b', data);
       if (response.status === 201) {
         Alert.alert('Saved!', 'The customer information was successfully saved.');
         navigation.navigate('CustomerScreen');
@@ -49,14 +80,13 @@ export const AddNewCustomer = () => {
   };
 
   const handleReset = () => {
-    setId('');
+    setIdNumber('');
     setName('');
     setLastname('');
     setMail('');
     setPhone('');
     setGender('');
     setNationality('');
-    setIdNumber('');
     setBirthday('');
     setAddress('');
     setCountry('');
@@ -74,11 +104,11 @@ export const AddNewCustomer = () => {
           <View style={styles.line} />
 
           <View style={styles.row}>
-            <Text style={styles.names}>Customer Id</Text>
+            <Text style={styles.names}>Passport Id Number</Text>
             <TextInput
               style={styles.input}
-              value={Id}
-              onChangeText={setId}
+              value={Idnumber}
+              onChangeText={setIdNumber}
               autoCapitalize="none"
             />
           </View>
@@ -137,15 +167,6 @@ export const AddNewCustomer = () => {
             />
           </View>
           <View style={styles.row}>
-            <Text style={styles.names}>Passport Id Number</Text>
-            <TextInput
-              style={styles.input}
-              value={Idnumber}
-              onChangeText={setIdNumber}
-              autoCapitalize="none"
-            />
-          </View>
-          <View style={styles.row}>
             <Text style={styles.names}>Birthday</Text>
             <TextInput
               style={styles.input}
@@ -195,11 +216,13 @@ export const AddNewCustomer = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 10,
     padding: 10,
+    backgroundColor: '#f7f7f7',
   },
   scrollContainer: {
     padding: 20,
@@ -227,15 +250,14 @@ const styles = StyleSheet.create({
     width: 160,
     borderColor: 'orange',
     borderWidth: 1.5,
-    borderRadius: 15,
+    borderRadius: 10,
     fontSize: 15,
     paddingHorizontal: 20,
   },
   names: {
     fontSize: 15,
-    fontWeight: 'bold',
     color: 'black',
-    fontStyle: 'italic',
+   
   },
   button: {
     alignSelf: 'flex-end',
@@ -246,11 +268,9 @@ const styles = StyleSheet.create({
     width: 90,
     borderColor: 'orange',
     borderWidth: 1.5,
-    borderRadius: 15,
-    fontWeight: 'bold',
+    borderRadius: 10,
     textAlign: 'center',
-    lineHeight: 35,
-    fontStyle: 'italic',
+    lineHeight: 35,  
     fontSize: 20,
   },
   plusButton: {

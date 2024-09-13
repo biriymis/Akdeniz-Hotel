@@ -4,6 +4,7 @@ import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Period {
   startDate: string;
@@ -32,7 +33,7 @@ const Rooms: React.FC = () => {
   useEffect(() => {
     const fetchRoomsData = async () => {
       try {
-        const response = await axios.get('https://run.mocky.io/v3/536e42bf-0b67-4728-b081-577ce0a08585');
+        const response = await axios.get('https://run.mocky.io/v3/5241c0c1-4788-4930-b4bb-496f33442733');
         setRoomsData(response.data.rooms);
       } catch (error) {
         console.error('Error fetching rooms data:', error);
@@ -85,6 +86,7 @@ const Rooms: React.FC = () => {
     setShowActionModal(true);
   };
 
+
   const handleActionChoice = (action: string) => {
     if (selectedRoom) {
       if (action === 'reserve' || action === 'booked') {
@@ -121,6 +123,12 @@ const Rooms: React.FC = () => {
 
   return (
     <View style={styles.container}>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('HotelRooms')}>
+          <Ionicons name="business-outline" size={35} color="black" /> 
+        </TouchableOpacity>
+      </View>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={markedDates}
@@ -142,6 +150,8 @@ const Rooms: React.FC = () => {
         <Text style={styles.buttonText}>Check Available Rooms</Text>
       </TouchableOpacity>
 
+      
+  
       <Modal
         visible={isModalVisible}
         onRequestClose={() => setModalVisible(false)}
@@ -186,6 +196,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginTop:70,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft:320,
+
   },
   calendar: {
     borderRadius: 10,

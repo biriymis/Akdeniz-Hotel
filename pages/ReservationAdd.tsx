@@ -22,7 +22,7 @@ export const ReservationAdd = () => {
      };
 
      try{
-      const response = await fetch('url', {
+      const response = await fetch('https://run.mocky.io/v3/659b27eb-c2f8-4156-a3a4-bd777baafb12', {
        method:'POST',
        headers:{
         'Content-Type':'application/json',

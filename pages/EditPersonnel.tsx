@@ -40,13 +40,14 @@ const EditPersonnel = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {
+      await axios.put(`https://run.mocky.io/v3/4ba37842-f76d-4008-9c25-ee2144685712/${id}`, {
         name,
         email,
         phone,
         gender,
         address: { street: address }
       });
+      
       Alert.alert('Success', 'Personnel information has been updated.');
       navigation.navigate('Personnel');
     } catch (error) {

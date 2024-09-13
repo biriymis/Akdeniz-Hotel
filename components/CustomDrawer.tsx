@@ -6,17 +6,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CustomDrawer = (props: any) => {
   const { navigation } = props;
-  const user = props.user;
-  const userImage = user?.imageUrl; 
-  const userName = user?.name; // Kullanıcı adını dinamik olarak alıyoruz
+  const { user } = props; 
+  const userImage = user?.imageUrl || 'https://default-image-url.com'; 
+  const userName = user?.name || 'Guest'; 
 
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: '#ffffff' }}>
         <ImageBackground
           source={require('../images/orange.png')}
-          style={{ padding: 70 }}>
-          <Image source={{ uri: userImage }} style={{ borderRadius: 20, width: 100, height: 100 }} />
+          style={{ padding: 60 }}>
+          <Image source={{ uri: userImage }} style={{ borderRadius: 20, width: 50, height: 50 }} />
           <Text style={{ color: 'black', fontSize: 18, fontStyle: 'italic', }}>
             Welcome {userName}!
           </Text>
